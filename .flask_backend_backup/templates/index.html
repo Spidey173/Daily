@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily drop - Quick Delivery E-commerce</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo1.webp') }}">
+
+  <!-- Centralized Premium Styling -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <script src="{{ url_for('static', filename='js/cart-helpers.js') }}"></script>
+</head>
+<body>
+    <!-- Animated Glowing Blobs -->
+    <div class="glow-blob glow-blob-1"></div>
+    <div class="glow-blob glow-blob-2"></div>
+    <div class="glow-blob glow-blob-3"></div>
+
+<nav class="navbar">
+    <div class="container navbar-container">
+        <a href="#" class="logo">
+            <i class="fas fa-shopping-basket"></i> Daily<span>Drop</span>
+        </a>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for products..." />
+        </div>
+        <div class="nav-actions">
+            <!-- Conditional login/logout -->
+            {% if 'user_id' in session %}
+                <span class="welcome-text">Hi, {{ session['name'] }}</span>
+                <a href="{{ url_for('orders') }}" class="login-btn-outline"><i class="fas fa-box"></i> My Orders</a>
+                <a href="{{ url_for('logout') }}" class="login-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+            {% endif %}
+            <!-- Always show cart button -->
+            <a href="{{ url_for('cart') }}" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i> My Cart <span id="cart-count">0</span>
+            </a>
+        </div>
+    </div>
+</nav>
+      <section class="container search-results-container" style="display: none;">
+        <h2 class="products-title">Search Results</h2>
+        <div class="products-grid" id="search-results-grid"></div>
+      </section>
+  <!-- Hero Slider -->
+  <div class="container">
+    <div class="hero-slider">
+      <div class="slide active">
+        <img src="/static/slider/Vegetables.png" alt="Vegetables">
+        <div class="slide-content">
+          <h2>Fresh veggies, great deals!</h2>
+          <p>Experience the finest, farm-fresh vegetables, rich in flavor and nutrition every day!</p>
+          <a href="{{ url_for('vegetables') }}" class="slide-btn">Explore Now</a>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="/static/slider/dairy and breakfast.png" alt="Dairy and Breakfast">
+        <div class="slide-content">
+          <h2>Fresh dairy, perfect breakfasts!</h2>
+          <p>Discover rich, creamy dairy products and wholesome breakfast essentials to start your day right!</p>
+          <a href="{{ url_for('dairy_breakfast') }}" class="slide-btn">See What's Fresh</a>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="/static/slider/snacks.png" alt="Snacks">
+        <div class="slide-content">
+          <h2>Delicious snacks & munchies!</h2>
+          <p>Indulge in crispy chips, sweet chocolates, gourmet cookies, and delightful treats any time!</p>
+          <a href="{{ url_for('snacks') }}" class="slide-btn">Find Your Favorites</a>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="/static/slider/babycare.png" alt="Babycare">
+        <div class="slide-content">
+          <h2>Gentle care for your little one!</h2>
+          <p>Discover premium baby care products that nurture and protect your baby's delicate skin and health.</p>
+          <a href="{{ url_for('baby_care') }}" class="slide-btn">Shop Now</a>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="/static/slider/grocery.png" alt="Grocery">
+        <div class="slide-content">
+          <h2>Gourmet Groceries & Pantry Essentials</h2>
+          <p>Stock your kitchen with premium, handpicked artisanal spices, pantry classics, and organic staples.</p>
+          <a href="{{ url_for('grocery') }}" class="slide-btn">Stock Your Pantry</a>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="/static/slider/beverages.png" alt="Beverages">
+        <div class="slide-content">
+          <h2>Refreshing Beverages & Craft Sodas</h2>
+          <p>Thirst-quenching juices, sparkling waters, gourmet lassis, and artisanal tea blends.</p>
+          <a href="{{ url_for('beverages') }}" class="slide-btn">Explore Refreshments</a>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="/static/slider/frozen_foods.png" alt="Frozen Foods">
+        <div class="slide-content">
+          <h2>Premium Gelatos & Frozen Treats</h2>
+          <p>Indulge in pure bliss with gourmet ice cream cones, creamy pints, and delightful frozen desserts.</p>
+          <a href="{{ url_for('frozen_foods') }}" class="slide-btn">Shop Frozen Foods</a>
+        </div>
+      </div>
+      <div class="slider-nav">
+        <button class="slider-arrow prev">←</button>
+        <button class="slider-arrow next">→</button>
+      </div>
+      <div class="slider-dots"></div>
+    </div>
+  </div>
+
+
+  <!-- Categories Section -->
+<section class="categories-section">
+  <div class="container">
+    <h2 class="section-title">Shop by Category</h2>
+    <div class="categories-grid">
+      <!-- Fruits & Vegetables -->
+      <a href="{{ url_for('vegetables') }}" class="category-card">
+        <div class="image-container">
+          <img src="/static/image/vegetables.jpg" alt="Fruits & Vegetables">
+        </div>
+        <h3>Fruits & Vegetables</h3>
+      </a>
+
+      <!-- Dairy & Breakfast -->
+      <a href="{{ url_for('dairy_breakfast') }}" class="category-card">
+        <div class="image-container">
+          <img src="/static/image/dairy.jpg" alt="Dairy & Breakfast">
+        </div>
+        <h3>Dairy & Breakfast</h3>
+      </a>
+
+            <!-- Snacks -->
+      <a href="{{ url_for('snacks') }}" class="category-card">
+        <div class="image-container">
+          <img src="/static/image/snaks.jpeg" alt="Snacks">
+        </div>
+        <h3>Snacks</h3>
+      </a>
+
+
+      <!-- Baby Care -->
+      <a href="{{ url_for('baby_care') }}" class="category-card">
+        <div class="image-container">
+          <img src="/static/image/baby.png" alt="Baby Care">
+        </div>
+        <h3>Baby Care</h3>
+      </a>
+
+
+
+
+      <!-- Personal Care -->
+      <a href="{{ url_for('personal_care') }}" class="category-card">
+        <div class="image-container">
+          <img src="/static/image/personalcare.jpg" alt="Personal Care">
+        </div>
+        <h3>Personal Care</h3>
+      </a>
+
+      <!-- Household Items -->
+      <a href="{{ url_for('household_items') }}" class="category-card">
+        <div class="image-container">
+          <img src="/static/image/household.jpeg" alt="Household Items">
+        </div>
+        <h3>Household Items</h3>
+      </a>
+
+
+
+      <!-- Home & Kitchen -->
+      <a href="{{ url_for('home_kitchen') }}" class="category-card">
+        <div class="image-container">
+          <img src="/static/image/kitchen.jpeg" alt="Home & Kitchen">
+        </div>
+        <h3>Home & Kitchen</h3>
+      </a>
+
+            <!-- Electronics -->
+      <a href="{{ url_for('grocery') }}" class="category-card">
+        <div class="image-container">
+          <img src="/static/image/grocery.jpeg" alt="Grocery">
+        </div>
+        <h3>Grocery</h3>
+      </a>
+
+      <!-- Beverages -->
+      <a href="{{ url_for('beverages') }}" class="category-card">
+        <div class="image-container">
+          <img src="/static/image/beverages.jpg" alt="Beverages">
+        </div>
+        <h3>Beverages</h3>
+      </a>
+
+      <!-- Frozen Foods -->
+      <a href="{{ url_for('frozen_foods') }}" class="category-card">
+        <div class="image-container">
+          <img src="/static/image/frozen_foods.jpg" alt="Frozen Foods">
+        </div>
+        <h3>Frozen Foods</h3>
+      </a>
+
+
+    </div>
+  </div>
+</section>
+<br><section class="container products-container active" id="all">
+  <h2 class="products-title">Popular Products</h2>
+  <div class="products-grid">
+
+    <!-- Tomato -->
+    <div class="product-card" data-title="Tomato" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/tomato.jpg" alt="Tomato" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Tomato (1kg)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.50</span>
+          <span class="original-price">Rs.63</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Tomato', 50, '/static/fruits-vegetables/tomato.jpg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Brinjal -->
+    <div class="product-card" data-title="Brinjal" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/brinjal.jpeg" alt="Brinjal" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Brinjal (1kg)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.50</span>
+          <span class="original-price">Rs.63</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Brinjal', 50, '/static/fruits-vegetables/brinjal.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Apples -->
+    <div class="product-card" data-title="Apples" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/apples.jpeg" alt="Apples" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Apples (1kg)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.70</span>
+          <span class="original-price">Rs.88</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Apples', 70, '/static/fruits-vegetables/apples.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Capsicum -->
+    <div class="product-card" data-title="Capsicum" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/capsicum.jpeg" alt="Capsicum" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Capsicum (1kg)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.40</span>
+          <span class="original-price">Rs.50</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Capsicum', 40, '/static/fruits-vegetables/capsicum.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Cauliflower -->
+    <div class="product-card" data-title="Cauliflower" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/cauliflower.jpeg" alt="Cauliflower" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Cauliflower (1 pc)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.60</span>
+          <span class="original-price">Rs.75</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Cauliflower', 60, '/static/fruits-vegetables/cauliflower.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Broccoli -->
+    <div class="product-card" data-title="Broccoli" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/broccoli.jpeg" alt="Broccoli" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Broccoli (1 pc)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.40</span>
+          <span class="original-price">Rs.50</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Broccoli', 40, '/static/fruits-vegetables/broccoli.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Pineapple -->
+    <div class="product-card" data-title="Pineapple" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/pineapple.jpeg" alt="Pineapple" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Pineapple (1 pc)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.60</span>
+          <span class="original-price">Rs.75</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Pineapple', 60, '/static/fruits-vegetables/pineapple.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Kiwi (premium) -->
+    <div class="product-card" data-title="Kiwi" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/kiwi.jpeg" alt="Kiwi" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Kiwi (Premium, 500g)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.100</span>
+          <span class="original-price">Rs.125</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Kiwi', 100, '/static/fruits-vegetables/kiwi.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Green apple -->
+    <div class="product-card" data-title="Green apple" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/green-apple.jpeg" alt="Green apple" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Green Apple (1kg)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.40</span>
+          <span class="original-price">Rs.50</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Green apple', 40, '/static/fruits-vegetables/green-apple.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Bananas -->
+    <div class="product-card" data-title="Bananas" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/bananas.jpeg" alt="Bananas" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Bananas (1 dozen)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.40</span>
+          <span class="original-price">Rs.50</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Bananas', 40, '/static/fruits-vegetables/bananas.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Dragon Fruit -->
+    <div class="product-card" data-title="Dragon Fruit" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/dragon-fruit.jpeg" alt="Dragon Fruit" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Dragon Fruit (Premium, 1pc)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.60</span>
+          <span class="original-price">Rs.75</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Dragon Fruit', 60, '/static/fruits-vegetables/dragon-fruit.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Black Grapes -->
+    <div class="product-card" data-title="Black Grapes" data-category="Fruits & Vegetables">
+      <span class="badge-discount">20% OFF</span>
+      <div class="product-image-container">
+        <img src="/static/fruits-vegetables/black-grapes.jpeg" alt="Black Grapes" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Black Grapes (500g)</div>
+        <div class="product-category">Fruits & Vegetables</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.70</span>
+          <span class="original-price">Rs.88</span>
+          <span class="discount">20% OFF</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Black Grapes', 70, '/static/fruits-vegetables/black-grapes.jpeg')">ADD</button>
+      </div>
+    </div>
+
+
+    <!-- Blueberry Cinnamon Flax (Dairy & Breakfast) -->
+    <div class="product-card" data-title="Blueberry cinnamon flax" data-category="Dairy & Breakfast">
+      <div class="product-image-container">
+        <img src="/static/dairy-breakfast/blueberry-cinnamon-flax.jpeg" alt="Blueberry cinnamon flax" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Blueberry Cinnamon Flax (1 pack)</div>
+        <div class="product-category">Dairy & Breakfast</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.50</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Blueberry cinnamon flax', 50, '/static/dairy-breakfast/blueberry-cinnamon-flax.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Chopper (Home and Kitchen) -->
+    <div class="product-card" data-title="Chopper" data-category="Home and Kitchen">
+      <div class="product-image-container">
+        <img src="/static/home-kitchen/chopper.jpeg" alt="Chopper" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Vegetable Chopper</div>
+        <div class="product-category">Home and Kitchen</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.250</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Chopper', 250, '/static/home-kitchen/chopper.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Fairy (House Hold) -->
+    <div class="product-card" data-title="Fairy" data-category="House Hold">
+      <div class="product-image-container">
+        <img src="/static/household/fairy.jpeg" alt="Fairy" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Fairy Dishwash Liquid (500ml)</div>
+        <div class="product-category">House Hold</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.90</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Fairy', 90, '/static/household/fairy.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Baby Biscuits (Baby Care) -->
+    <div class="product-card" data-title="Baby biscuits" data-category="Baby Care">
+      <div class="product-image-container">
+        <img src="/static/baby-care/baby-biscuits.jpeg" alt="Baby biscuits" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Baby Biscuits (1 pack)</div>
+        <div class="product-category">Baby Care</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.75</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Baby biscuits', 75, '/static/baby-care/baby-biscuits.jpeg')">ADD</button>
+      </div>
+    </div>
+
+
+    <!-- Amul Lassi -->
+    <div class="product-card" data-title="Amul lassi" data-category="Dairy & Breakfast">
+      <div class="product-image-container">
+        <img src="/static/beverages/amul-lassi.jpeg" alt="Amul lassi" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Amul Lassi (1 unit)</div>
+        <div class="product-category">Dairy & Breakfast</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.20</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Amul lassi', 20, '/static/beverages/amul-lassi.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Milk -->
+    <div class="product-card" data-title="Milk" data-category="Dairy & Breakfast">
+      <div class="product-image-container">
+        <img src="/static/dairy-breakfast/milk.jpg" alt="Milk" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Milk (500ml)</div>
+        <div class="product-category">Dairy & Breakfast</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.20</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Milk', 20, '/static/dairy-breakfast/milk.jpg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Bread -->
+    <div class="product-card" data-title="Bread" data-category="Dairy & Breakfast">
+      <div class="product-image-container">
+        <img src="/static/dairy-breakfast/bread.jpeg" alt="Bread" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Bread (400g)</div>
+        <div class="product-category">Dairy & Breakfast</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.50</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Bread', 50, '/static/dairy-breakfast/bread.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Butter -->
+    <div class="product-card" data-title="Butter" data-category="Dairy & Breakfast">
+      <div class="product-image-container">
+        <img src="/static/dairy-breakfast/butter.jpeg" alt="Butter" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Butter (100g)</div>
+        <div class="product-category">Dairy & Breakfast</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.50</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Butter', 50, '/static/dairy-breakfast/butter.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Cheese slice -->
+    <div class="product-card" data-title="Cheese slice" data-category="Dairy & Breakfast">
+      <div class="product-image-container">
+        <img src="/static/dairy-breakfast/cheese-slice.jpeg" alt="Cheese slice" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Cheese Slice (5 pcs)</div>
+        <div class="product-category">Dairy & Breakfast</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.70</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Cheese slice', 70, '/static/dairy-breakfast/cheese-slice.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Gulab Jamun -->
+    <div class="product-card" data-title="Gulab jamun" data-category="Dairy & Breakfast">
+      <div class="product-image-container">
+        <img src="/static/dairy-breakfast/gulab-jamun.jpeg" alt="Gulab jamun" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Gulab Jamun (250g)</div>
+        <div class="product-category">Dairy & Breakfast</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.75</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Gulab jamun', 75, '/static/dairy-breakfast/gulab-jamun.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Horlicks -->
+    <div class="product-card" data-title="Horlicks" data-category="Dairy & Breakfast">
+      <div class="product-image-container">
+        <img src="/static/dairy-breakfast/horlicks.jpeg" alt="Horlicks" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Horlicks (200g)</div>
+        <div class="product-category">Dairy & Breakfast</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.55</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Horlicks', 55, '/static/dairy-breakfast/horlicks.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Dove soap (Personal Care) -->
+    <div class="product-card" data-title="Dove soap" data-category="personal care">
+      <div class="product-image-container">
+        <img src="/static/personal-care/dove-soap.jpeg" alt="Dove soap" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Dove Soap (100g)</div>
+        <div class="product-category">Personal Care</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.50</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Dove soap', 50, '/static/personal-care/dove-soap.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Face mask (Personal Care) -->
+    <div class="product-card" data-title="Facemask" data-category="personal care">
+      <div class="product-image-container">
+        <img src="/static/personal-care/facemask.jpeg" alt="Facemask" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Face Mask (Pack of 2)</div>
+        <div class="product-category">Personal Care</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.100</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Facemask', 100, '/static/personal-care/facemask.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Colgate toothpaste -->
+    <div class="product-card" data-title="Colgate Toothpaste" data-category="personal care">
+      <div class="product-image-container">
+        <img src="/static/personal-care/colgate-toothpaste.jpeg" alt="Colgate toothpaste" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Colgate Toothpaste (100g)</div>
+        <div class="product-category">Personal Care</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.70</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Colgate Toothpaste', 70, '/static/personal-care/colgate-toothpaste.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Kitkat (Snacks) -->
+    <div class="product-card" data-title="Kitkat" data-category="Snacks">
+      <div class="product-image-container">
+        <img src="/static/snacks-beverages/kitkat.jpeg" alt="Kitkat" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Kitkat (1 bar)</div>
+        <div class="product-category">Snacks</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.20</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Kitkat', 20, '/static/snacks-beverages/kitkat.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Kurkure (Snacks) -->
+    <div class="product-card" data-title="Kurkure" data-category="Snacks">
+      <div class="product-image-container">
+        <img src="/static/snacks-beverages/kurkure.jpeg" alt="Kurkure" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Kurkure (100g)</div>
+        <div class="product-category">Snacks</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.20</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Kurkure', 20, '/static/snacks-beverages/kurkure.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Fanta -->
+    <div class="product-card" data-title="Fanta" data-category="Beverages">
+      <div class="product-image-container">
+        <img src="/static/beverages/fanta.jpeg" alt="Fanta" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Fanta (350ml)</div>
+        <div class="product-category">Beverages</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.50</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Fanta', 50, '/static/beverages/fanta.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Pampers (Baby Care) -->
+    <div class="product-card" data-title="Pampers" data-category="Baby Care">
+      <div class="product-image-container">
+        <img src="/static/baby-care/pampers.jpeg" alt="Pampers" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Pampers (Small Pack)</div>
+        <div class="product-category">Baby Care</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.200</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Pampers', 200, '/static/baby-care/pampers.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Jeera Powder (Grocery) -->
+    <div class="product-card" data-title="Jeera powder" data-category="Grocery">
+      <div class="product-image-container">
+        <img src="/static/grocery/jeera-powder.jpeg" alt="Jeera Powder" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Jeera Powder (200g)</div>
+        <div class="product-category">Grocery</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.250</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Jeera powder', 250, '/static/grocery/jeera-powder.jpeg')">ADD</button>
+      </div>
+    </div>
+
+    <!-- Attack (House Hold) -->
+    <div class="product-card" data-title="Attack" data-category="House Hold">
+      <div class="product-image-container">
+        <img src="/static/household/attack.jpeg" alt="Attack" class="product-image" />
+      </div>
+      <div class="product-details">
+        <div class="product-title">Attack Detergent (500g)</div>
+        <div class="product-category">House Hold</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.200</span>
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('Attack', 200, '/static/household/attack.jpeg')">ADD</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+  <button class="scroll-to-top" onclick="scrollToTop()">↑</button>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-column">
+                <div class="footer-logo">
+                    <i class="fas fa-shopping-basket"></i> Daily<span>Drop</span>
+                </div>
+                <p class="footer-description">
+                    Revolutionizing grocery shopping. Get premium fresh foods and everyday essentials delivered directly to your door in 10 minutes.
+                </p>
+            </div>
+            <div class="footer-column">
+                <h4>Categories</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('grocery') }}">Groceries</a></li>
+                    <li><a href="{{ url_for('personal_care') }}">Personal Care</a></li>
+                    <li><a href="{{ url_for('household_items') }}">Household Items</a></li>
+                    <li><a href="{{ url_for('home_kitchen') }}">Home & Kitchen</a></li>
+                    <li><a href="{{ url_for('baby_care') }}">Baby Products</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+                    <li><a href="{{ url_for('contact_us') }}">Contact Us</a></li>
+                    <li><a href="{{ url_for('faqs') }}">FAQs</a></li>
+                    <li><a href="{{ url_for('terms_signup_home') }}">Terms & Conditions</a></li>
+                    <li><a href="{{ url_for('privacy_policy_signup_home') }}">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Get In Touch</h4>
+                <ul class="footer-contact">
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Horticulture, Chitradurga, Karnataka, India</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <span>support@dailydrop.com</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone-alt"></i>
+                        <span>+91 78292 83748</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 DailyDrop. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #EF4444;"></i> for visual excellence.</p>
+        </div>
+    </div>
+</footer>
+
+
+
+<script>
+
+
+    // Slider Functionality
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.querySelector('.slider-dots');
+    const prevButton = document.querySelector('.prev');
+    const nextButton = document.querySelector('.next');
+    let currentSlide = 0;
+    let autoSlideInterval;
+
+    // Create dots
+    slides.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      if (index === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => goToSlide(index));
+      dotsContainer.appendChild(dot);
+    });
+
+    function goToSlide(index) {
+      slides[currentSlide].classList.remove('active');
+      dotsContainer.children[currentSlide].classList.remove('active');
+      currentSlide = (index + slides.length) % slides.length;
+      slides[currentSlide].classList.add('active');
+      dotsContainer.children[currentSlide].classList.add('active');
+    }
+
+    function nextSlide() {
+      goToSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      goToSlide(currentSlide - 1);
+    }
+
+    prevButton.addEventListener('click', prevSlide);
+    nextButton.addEventListener('click', nextSlide);
+
+    function startAutoSlide() {
+      autoSlideInterval = setInterval(nextSlide, 2500);
+    }
+
+    function stopAutoSlide() {
+      clearInterval(autoSlideInterval);
+    }
+
+    const heroSlider = document.querySelector('.hero-slider');
+    startAutoSlide();
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+    });
+
+
+// Search Functionality
+const searchInput = document.getElementById('searchInput');
+const searchResultsContainer = document.querySelector('.search-results-container');
+const searchResultsGrid = document.getElementById('search-results-grid');
+const allSections = document.querySelectorAll('.hero-slider, .categories-section, .products-container');
+const allProducts = document.querySelectorAll('.product-card');
+
+// Replace existing search functionality with this
+searchInput.addEventListener('input', function() {
+  const searchTerm = this.value.trim().toLowerCase();
+  searchResultsGrid.innerHTML = '';
+
+  if (!searchTerm) {
+    searchResultsContainer.style.display = 'none';
+    allSections.forEach(section => section.style.display = '');
+    document.querySelector('.products-container.active').style.display = 'block';
+    return;
+  }
+
+  allSections.forEach(section => section.style.display = 'none');
+  searchResultsContainer.style.display = 'block';
+
+  const filteredProducts = window.productsDB.filter(product =>
+    product.title.toLowerCase().includes(searchTerm)
+  );
+
+  if (filteredProducts.length === 0) {
+    searchResultsGrid.innerHTML = `
+      <div class="no-results">
+        <i class="fas fa-search"></i>
+        <p>No products found for "${searchTerm}"</p>
+      </div>
+    `;
+    return;
+  }
+
+  filteredProducts.forEach(product => {
+    const productCard = document.createElement('div');
+    productCard.className = 'product-card';
+    productCard.innerHTML = `
+      <img src="${product.image}" alt="${product.title}" class="product-image" />
+      <div class="product-details">
+        <div class="product-title">${product.title}</div>
+        <div class="product-category">${product.category}</div>
+        <div class="product-pricing">
+          <span class="current-price">Rs.${product.price}</span>
+          ${product.discount ? `
+            <span class="original-price">Rs.${Math.round(product.price/(1-product.discount/100))}</span>
+            <span class="discount">${product.discount}% OFF</span>
+          ` : ''}
+        </div>
+        <button class="add-to-cart-btn" onclick="addToCart('${product.title.replace(/'/g, "\\'")}', ${product.price}, '${product.image}')">ADD</button>
+      </div>
+    `;
+
+    searchResultsGrid.appendChild(productCard);
+  });
+  updateProductButtons();
+});
+
+// Category Filtering
+const categories = document.querySelectorAll('.category-card');
+const productContainers = document.querySelectorAll('.products-container');
+
+// Scroll to Top
+const scrollButton = document.querySelector('.scroll-to-top');
+
+window.addEventListener('scroll', () => {
+  window.pageYOffset > 300
+    ? scrollButton.classList.add('show')
+    : scrollButton.classList.remove('show');
+});
+
+scrollButton.addEventListener('click', scrollToTop);
+
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+// Initialize cart count on page load
+function initializeCart() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const count = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+    document.getElementById('cart-count').textContent = count;
+}
+
+// Call this when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    initializeCart();
+    updateProductButtons();
+});
+
+// Initialize cart count on page load
+updateCartCount();
+  </script>
+
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+</body>
+</html>
