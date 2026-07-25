@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://daily-ten-alpha.vercel.app/"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" /></a>
+  <a href="https://dailydrop.vercel.app/"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" /></a>
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img src="https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" /></a>
   <a href="https://developer.mozilla.org/en-US/docs/Web/CSS"><img src="https://img.shields.io/badge/CSS3-Vanilla-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3" /></a>
   <a href="https://developer.mozilla.org/en-US/docs/Web/HTML"><img src="https://img.shields.io/badge/HTML5-Semantic-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" /></a>
@@ -19,7 +19,7 @@
 
 ## 🌐 Live Demo & Deployment
 
-- **Live Web App**: [https://daily-ten-alpha.vercel.app/](https://daily-ten-alpha.vercel.app/)
+- **Live Web App**: [https://dailydrop.vercel.app/](https://dailydrop.vercel.app/)
 - **GitHub Repository**: [https://github.com/Spidey173/Daily.git](https://github.com/Spidey173/Daily.git)
 
 ---
