@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DailyDrop | Privacy Policy</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="static/logo1.webp">
+
+  <!-- Bootstrap & FontAwesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- Centralized Stylesheet -->
+  <link rel="stylesheet" href="static/css/main.css">
+
+  <style>
+    body {
+      background-color: var(--bg-base);
+    }
+    .info-page {
+      max-width: 900px;
+      margin: 120px auto 60px;
+      padding: 0 20px;
+    }
+    .info-card {
+      background: rgba(15, 22, 42, 0.55);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-glass);
+      padding: 40px;
+      box-shadow: var(--shadow-xl);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .info-card h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .info-card .last-updated {
+      font-size: 0.9rem;
+      color: var(--accent);
+      margin-bottom: 30px;
+    }
+    .info-section {
+      margin-bottom: 28px;
+    }
+    .info-section h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .info-section p, .info-section li {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 0.98rem;
+    }
+    .info-section ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Glowing Blobs -->
+  <div class="glow-blob glow-blob-1"></div>
+  <div class="glow-blob glow-blob-2"></div>
+  <div class="glow-blob glow-blob-3"></div>
+
+  <!-- Sticky Navbar -->
+  <nav class="navbar">
+      <div class="container navbar-container">
+          <a href="index.html" class="logo">
+              <i class="fas fa-shopping-basket"></i> Daily<span>Drop</span>
+          </a>
+          <div class="nav-actions">
+              <a href="orders.html" class="login-btn-outline"><i class="fas fa-box"></i> My Orders</a>
+              <a href="cart.html" class="cart-icon">
+                  <i class="fas fa-shopping-cart"></i> My Cart <span id="cart-count">0</span>
+              </a>
+          </div>
+      </div>
+  </nav>
+
+  <div class="info-page">
+    <div class="info-card">
+      <h1><i class="fas fa-shield-alt me-2" style="color: var(--accent);"></i> Privacy Policy</h1>
+      <div class="last-updated">Last Updated: August 2026</div>
+
+      <div class="info-section">
+        <h3>1. Information We Collect</h3>
+        <p>DailyDrop values your privacy. We collect minimal information necessary to process order deliveries, such as delivery addresses, phone numbers, and cart preferences stored locally in your browser.</p>
+      </div>
+
+      <div class="info-section">
+        <h3>2. How We Use Information</h3>
+        <ul>
+          <li>To fulfill and track your order status in real-time.</li>
+          <li>To provide customer support and delivery notifications.</li>
+          <li>To personalize your shopping experience across store categories.</li>
+        </ul>
+      </div>
+
+      <div class="info-section">
+        <h3>3. Data Protection & Storage</h3>
+        <p>Your local cart and order history are securely preserved in browser storage (`localStorage`). DailyDrop never sells, rents, or shares your personal details with third-party advertisers.</p>
+      </div>
+
+      <div class="info-section">
+        <h3>4. Cookies & Local Data</h3>
+        <p>We use essential client-side cookies and local storage tokens to remember your shopping cart items and order history across page refreshes.</p>
+      </div>
+
+      <div class="info-section">
+        <h3>5. Contact Us</h3>
+        <p>If you have any privacy inquiries or request data removal, please email us at <a href="contact_us.html" style="color: var(--accent);">privacy@dailydrop.com</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="static/js/cart-helpers.js"></script>
+</body>
+</html>
